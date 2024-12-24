@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirecting...</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+        }
+        .container {
+            text-align: center;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 1rem auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="spinner"></div>
+        <h2>Redirecting...</h2>
+        <p id="message">You will be redirected shortly.</p>
+    </div>
+
+    <script>
+        function getRedirectUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('url');
+        }
+
+        window.onload = function() {
+            const redirectUrl = getRedirectUrl();
+            const messageElement = document.getElementById('message');
+
+            if (redirectUrl) {
+                try {
+                    // Basic URL validation
+                    new URL(redirectUrl);
+                    
+                    messageElement.textContent = `Redirecting to: ${redirectUrl}`;
+                    // Short delay for smooth transition
+                    setTimeout(() => {
+                        window.location.href = redirectUrl;
+                    }, 1500);
+                } catch (e) {
+                    messageElement.textContent = 'Invalid URL provided.';
+                }
+            } else {
+                messageElement.textContent = 'No redirect URL specified.';
+            }
+        };
+    </script>
+</body>
+</html>
